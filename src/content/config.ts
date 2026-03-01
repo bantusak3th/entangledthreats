@@ -7,6 +7,7 @@ const projectsCollection = defineCollection({
     description: z.string(),
     year: z.number(),
     repoUrl: z.string().optional(),
+    coverImage: z.string().optional(), // <-- Add this line
   }),
 });
 
@@ -21,4 +22,5 @@ const musingsCollection = defineCollection({
 export const collections = {
   'projects': projectsCollection,
   'musings': musingsCollection,
+
 };
