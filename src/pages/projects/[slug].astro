@@ -1,4 +1,4 @@
-﻿---
+---
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 
@@ -12,10 +12,54 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
+
 <MainLayout title={entry.data.title}>
-  <h1>{entry.data.title}</h1>
-  {entry.data.repoUrl && <p><a href={entry.data.repoUrl} target="_blank">View Repository →</a></p>}
-  <div style="margin-top: 30px;">
-    <Content />
+  <div class="project-header">
+    <h1>{entry.data.title}</h1>
+    {entry.data.repoUrl && (
+      <a href={entry.data.repoUrl} target="_blank" class="repo-link">View Repository ↗</a>
+    )}
   </div>
+
+  {entry.data.coverImage && (
+    <img src={entry.data.coverImage} alt={`Cover for ${entry.data.title}`} class="cover-image" />
+  )}
+
+  <article class="markdown-content">
+    <Content />
+  </article>
 </MainLayout>
+
+<style>
+  .project-header {
+    margin-bottom: 30px;
+  }
+  
+  .project-header h1 {
+    margin-bottom: 5px;
+    margin-top: 0;
+  }
+
+  .repo-link {
+    color: #666;
+    font-size: 0.9em;
+    text-decoration: none;
+  }
+
+  .repo-link:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .cover-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover; /* Keeps the image from stretching */
+    margin-bottom: 40px;
+    border: 1px solid #eaeaea; /* Adds a subtle border for white images */
+  }
+
+  .markdown-content {
+    line-height: 1.6;
+  }
+</style>
