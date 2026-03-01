@@ -1,0 +1,19 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+projects.sort((a, b) => b.data.year - a.data.year);
+---
+<MainLayout title="Projects | Saketh Bantu">
+  <h2>Technical Work</h2>
+  <div>
+    {projects.map(project => (
+      <div class="list-item">
+        <a href={`/projects/${project.slug}`}>{project.data.title}</a> 
+        <span>[{project.data.year}]</span>
+        <p style="margin-bottom: 5px; font-size: 0.95em;">{project.data.description}</p>
+      </div>
+    ))}
+  </div>
+</MainLayout>

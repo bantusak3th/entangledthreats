@@ -1,0 +1,61 @@
+---
+interface Props {
+  title?: string;
+}
+const { title = "Saketh Bantu" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+</head>
+<body>
+    <header>
+        <h1><a href="/">Saketh Bantu</a></h1>
+        <nav>
+            <a href="/">about</a>
+            <a href="/projects">projects</a>
+            <a href="/musings">musings</a>
+            <a href="https://github.com/bantusak3th" target="_blank">github</a>
+        </nav>
+    </header>
+    <main>
+        <slot /> 
+    </main>
+</body>
+</html>
+
+<style is:global>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 16px;
+        line-height: 1.4;
+        color: #000;
+        max-width: 650px;
+        margin: 50px auto 0;
+        padding: 0 10px;
+        background: #fff;
+    }
+    header { margin-bottom: 60px; padding-bottom: 20px; border-bottom: 1px solid #000; }
+    header h1 { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+    header a { text-decoration: none; color: inherit; }
+    nav { display: flex; gap: 20px; }
+    nav a { text-decoration: none; color: #000; }
+    nav a:hover { text-decoration: underline; }
+    
+    /* Markdown Styles */
+    main p { margin-bottom: 20px; }
+    main h1, main h2, main h3 { font-weight: bold; margin-bottom: 20px; margin-top: 40px; }
+    main a { color: #000; }
+    main ul { margin-bottom: 20px; padding-left: 20px; }
+    pre { background: #f8f8f8; padding: 15px; overflow-x: auto; margin-bottom: 20px; border: 1px solid #eaeaea; }
+    code { font-family: ui-monospace, monospace; font-size: 14px; background: #f8f8f8; padding: 2px 4px; }
+    pre code { padding: 0; background: none; }
+    
+    .list-item { margin-bottom: 15px; }
+    .list-item span { color: #666; font-size: 0.9em; }
+</style>

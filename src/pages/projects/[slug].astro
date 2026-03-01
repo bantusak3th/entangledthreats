@@ -1,0 +1,21 @@
+﻿---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const projectEntries = await getCollection('projects');
+  return projectEntries.map(entry => ({
+    params: { slug: entry.slug }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<MainLayout title={entry.data.title}>
+  <h1>{entry.data.title}</h1>
+  {entry.data.repoUrl && <p><a href={entry.data.repoUrl} target="_blank">View Repository →</a></p>}
+  <div style="margin-top: 30px;">
+    <Content />
+  </div>
+</MainLayout>
