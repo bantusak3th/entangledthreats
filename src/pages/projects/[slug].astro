@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import MainLayout from '../../layouts/MainLayout.astro';
 
+// 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
   const projectEntries = await getCollection('projects');
   return projectEntries.map(entry => ({
@@ -9,57 +10,114 @@ export async function getStaticPaths() {
   }));
 }
 
+// 2. Get the entry directly from the prop
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
 <MainLayout title={entry.data.title}>
-  <div class="project-header">
-    <h1>{entry.data.title}</h1>
-    {entry.data.repoUrl && (
-      <a href={entry.data.repoUrl} target="_blank" class="repo-link">View Repository ↗</a>
+  <div class="project-container">
+    <header class="project-header">
+      <h1>{entry.data.title}</h1>
+      {entry.data.repoUrl && (
+        <a href={entry.data.repoUrl} target="_blank" class="repo-link">
+          View Repository ↗
+        </a>
+      )}
+    </header>
+
+    {entry.data.coverImage && (
+      <img 
+        src={entry.data.coverImage} 
+        alt={`Cover for ${entry.data.title}`} 
+        class="cover-image" 
+      />
     )}
+
+    <article class="markdown-content">
+      <Content />
+    </article>
   </div>
-
-  {entry.data.coverImage && (
-    <img src={entry.data.coverImage} alt={`Cover for ${entry.data.title}`} class="cover-image" />
-  )}
-
-  <article class="markdown-content">
-    <Content />
-  </article>
 </MainLayout>
 
 <style>
+  /* Centers the entire project block on the page */
+  .project-container {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 20px 0 60px 0;
+  }
+
+  /* Centers the title and link */
   .project-header {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    text-align: center;
   }
   
   .project-header h1 {
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-top: 0;
+    font-size: 2.2em;
+    line-height: 1.2;
   }
 
   .repo-link {
-    color: #666;
+    display: inline-block;
+    color: #555;
     font-size: 0.9em;
     text-decoration: none;
+    border: 1px solid #ddd;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
   }
 
   .repo-link:hover {
     color: #000;
-    text-decoration: underline;
+    border-color: #000;
+    background-color: #fafafa;
   }
 
+  /* Ensures images fit nicely and look structured */
   .cover-image {
     width: 100%;
-    max-height: 400px;
-    object-fit: cover; /* Keeps the image from stretching */
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
     margin-bottom: 40px;
-    border: 1px solid #eaeaea; /* Adds a subtle border for white images */
+    border: 1px solid #eee;
+    border-radius: 4px;
+    display: block;
   }
 
+  /* Styles for the Markdown content itself */
   .markdown-content {
-    line-height: 1.6;
+    line-height: 1.7;
+    font-size: 1.05em;
+    color: #222;
+  }
+
+  /* Target headers inside the rendered markdown */
+  .markdown-content :global(h2) {
+    margin-top: 2em;
+    margin-bottom: 0.8em;
+    font-size: 1.5em;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+  }
+
+  /* Styles code blocks for better readability */
+  .markdown-content :global(pre) {
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border: 1px solid #edf0f2;
+    overflow-x: auto;
+    margin: 25px 0;
+    font-size: 0.9em;
+  }
+
+  .markdown-content :global(p) {
+    margin-bottom: 1.5em;
   }
 </style>
